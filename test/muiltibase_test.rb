@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class MuiltibaseTest < ActiveSupport::TestCase
+class MultibaseTest < ActiveSupport::TestCase
   test "truth" do
-    assert_kind_of Module, Muiltibase
+    assert_kind_of Module, Multibase
   end
 end
