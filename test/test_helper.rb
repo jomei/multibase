@@ -1,7 +1,8 @@
 require 'pry'
 
 # Configure Rails Environment
-ENV["RAILS_ENV"] = "test"
+ENV['RAILS_ENV'] = 'test'
+ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
 require 'multibase'
 require File.expand_path("../dummy/config/environment.rb",  __FILE__)
 require "rails/test_help"

@@ -5,6 +5,11 @@ require 'active_record/railtie'
 require 'multibase/version'
 
 module Multibase
+
+  extend ActiveSupport::Autoload
+
+  autoload :Base
+
   def self.config(env)
     config = ActiveRecord::Base.configurations[Railtie.config_key]
     config ? config[env || Rails.env] : nil
