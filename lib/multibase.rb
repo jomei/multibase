@@ -3,6 +3,7 @@ require 'active_record'
 require 'active_record/railtie'
 
 require 'multibase/version'
+require 'multibase/railtie'
 
 module Multibase
 
