@@ -1,16 +1,17 @@
 module Multibase
   class Railtie < Rails::Railtie
-    puts 'itittata'
-    # binding.pry
-
     config.multibase = ActiveSupport::OrderedOptions.new
-    config.multibase.path = 'db/multibase'
+    config.multibase.db_path = 'db'
     config.multibase.config_key = 'multibase'
     config.multibase.run_with_db_tasks = true
 
     config.after_initialize do |app|
-      multibase_dir = app.root.join(config.multibase.path)
-      FileUtils.mkdir(multibase_dir) unless File.directory?(multibase_dir)
+      database_names = Rails.configuration.database_configuration.keys
+      multibases_dir = app.root.join(config.multibase.db_path)
+      database_names.each do |name|
+        db_dir = multibases_dir.join name
+        FileUtils.mkdir(db_dir) unless File.directory?(db_dir)
+      end
     end
 
     rake_tasks do
