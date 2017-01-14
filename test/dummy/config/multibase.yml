@@ -1,0 +1,36 @@
+sqllite_db:
+  default: &default
+    adapter: sqlite3
+    pool: 5
+    timeout: 5000
+
+  development:
+    <<: *default
+    database: db/development.sqlite3
+
+  test:
+    <<: *default
+    database: db/test.sqlite3
+
+  production:
+    <<: *default
+    database: db/production.sqlite3
+
+mysql_db:
+  development:
+    adapter: mysql2
+    encoding: utf8
+    database: my_db_name
+    username: root
+    password: my_password
+    host: 127.0.0.1
+    port: 3306
+
+  test:
+    adapter: mysql2
+    encoding: utf8
+    database: my_db_name
+    username: root
+    password: my_password
+    host: 127.0.0.1
+    port: 3306
