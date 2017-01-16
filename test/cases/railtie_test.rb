@@ -17,6 +17,10 @@ class RailtieTest < Multibase::TestCase
   #   assert_equal expected, railtie_klass.fullpath
   # end
 
+  def test_database_configuration
+     p railtie_klass.database_configuration
+  end
+
 
   private
 
