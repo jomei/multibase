@@ -16,9 +16,9 @@ sqllite_db:
     <<: *default
     database: db/production.sqlite3
 
-mysql_db:
+postgre_db:
   development:
-    adapter: mysql2
+    adapter: postgresql
     encoding: utf8
     database: my_db_name
     username: root
@@ -27,7 +27,7 @@ mysql_db:
     port: 3306
 
   test:
-    adapter: mysql2
+    adapter: postgresql
     encoding: utf8
     database: my_db_name
     username: root
