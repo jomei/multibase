@@ -20,17 +20,15 @@ postgre_db:
   development:
     adapter: postgresql
     encoding: utf8
-    database: my_db_name
-    username: root
-    password: my_password
+    database: multibase_db
+    username: multibase
+    password: multibase
     host: 127.0.0.1
-    port: 3306
 
   test:
     adapter: postgresql
     encoding: utf8
-    database: my_db_name
-    username: root
-    password: my_password
+    database: multibase_db
+    username: multibase
+    password: multibase
     host: 127.0.0.1
-    port: 3306
