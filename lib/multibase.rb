@@ -11,8 +11,8 @@ module Multibase
 
   autoload :Base
 
-  def self.config(env)
-    config = ActiveRecord::Base.configurations[Railtie.config_key]
+  def self.config(connection, env)
+    config = Multibase::Railtie.database_configuration[connection]
     config ? config[env || Rails.env] : nil
   end
 end

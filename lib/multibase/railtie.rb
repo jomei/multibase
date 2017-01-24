@@ -19,29 +19,10 @@ module Multibase
       load 'multibase/tasks/database.rake'
     end
 
-    initializer 'active_record.initialize_database' do |app|
-      ActiveSupport.on_load(:active_record) do
-        config = Multibase::Railtie.database_configuration
-        begin
-          config.each do |db_name, db_config|
-            self.configurations = db_config
-            establish_connection
-          end
-        rescue ActiveRecord::NoDatabaseError
-          warn <<-end_warning
-Oops - You have a database configured, but it doesn't exist yet!
-Here's how to get started:
-  1. Configure your database in config/database.yml.
-  2. Run `bin/rails db:create` to create the database.
-  3. Run `bin/rails db:setup` to load your database schema.
-          end_warning
-          raise
-        end
-      end
-    end
+
 
     initializer 'multibase.add_watchable_files' do |app|
-      p 'initit1111'
+
     end
 
     generators do
@@ -71,6 +52,11 @@ Here's how to get started:
               "Error: #{e.message}"
     rescue => e
       raise e, "Cannot load `Rails.application.database_configuration`:\n#{e.message}", e.backtrace
+    end
+
+    def fullpath(extra=nil)
+      path = Rails.root.join(config.second_base.path)
+      (extra ? path.join(path, extra) : path).to_s
     end
   end
 end
