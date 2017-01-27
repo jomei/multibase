@@ -4,6 +4,7 @@ require 'active_record/railtie'
 
 require 'multibase/version'
 require 'multibase/railtie'
+require 'multibase/exec'
 
 module Multibase
 
@@ -11,7 +12,8 @@ module Multibase
 
   autoload :Base
 
-  def self.config(connection, env)
+
+  def self.config(connection, env = nil)
     config = Multibase::Railtie.database_configuration[connection]
     config ? config[env || Rails.env] : nil
   end

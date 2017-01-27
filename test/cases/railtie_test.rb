@@ -3,12 +3,9 @@ require 'test_helper'
 class RailtieTest < Multibase::TestCase
 
   def test_config
-    expected_path = 'db/multibase'
+    expected_path = 'config/multibase.yml'
     assert_equal expected_path, railtie_inst.config.multibase.path
     assert_equal expected_path, railtie_klass.config.multibase.path
-    expected_config_key = 'multibase'
-    assert_equal expected_config_key, railtie_inst.config.multibase.config_key
-    assert_equal expected_config_key, railtie_klass.config.multibase.config_key
   end
 
   # def test_fullpath
@@ -18,7 +15,7 @@ class RailtieTest < Multibase::TestCase
   # end
 
   def test_database_configuration
-     p railtie_klass.database_configuration
+    # p railtie_klass.database_configuration
   end
 
 

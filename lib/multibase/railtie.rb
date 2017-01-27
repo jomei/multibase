@@ -19,8 +19,6 @@ module Multibase
       load 'multibase/tasks/database.rake'
     end
 
-
-
     initializer 'multibase.add_watchable_files' do |app|
 
     end
@@ -55,7 +53,7 @@ module Multibase
     end
 
     def fullpath(extra=nil)
-      path = Rails.root.join(config.second_base.path)
+      path = Rails.root.join(config.multibase.db_dir)
       (extra ? path.join(path, extra) : path).to_s
     end
   end

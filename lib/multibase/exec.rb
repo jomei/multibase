@@ -1,3 +1,4 @@
+require 'pry'
 module Multibase
 
   mattr_accessor :connected, instance_accessor: false
@@ -5,9 +6,9 @@ module Multibase
 
   def self.exec(connection_name)
     return yield if connected
-    multibase_config = Railtie.database_configuration
-    ActiveRecord::Tasks::DatabaseTasks.current_config = multibase_config[connection_name]
+    multibase_config = Multibase::Railtie.database_configuration
     ActiveRecord::Tasks::DatabaseTasks.current_config = config(connection_name)
+
     ActiveRecord::Base.configurations = multibase_config[connection_name]
     ActiveRecord::Base.establish_connection(config(connection_name))
     ActiveRecord::Tasks::DatabaseTasks.migrations_paths = [Multibase::Railtie.fullpath('migrate')]

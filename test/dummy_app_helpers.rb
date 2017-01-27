@@ -72,9 +72,9 @@ module Multibase
       end
     end
 
-    def run_multibase(args, stream=:stdout)
+    def run_on_connection(connection, args, stream=:stdout)
       capture(stream) do
-        Dir.chdir(dummy_root) { Kernel.system "#{run_cmd} db:multibase:#{args}" }
+        Dir.chdir(dummy_root) { Kernel.system "#{run_cmd} db:#{connection}:#{args}" }
       end
     end
 
@@ -82,12 +82,12 @@ module Multibase
 
     def assert_dummy_databases
       assert_equal 'base.sqlite3', dummy_database_sqlite
-      assert_match(/multibase_test/, `mysql -uroot -e "SHOW DATABASES"`)
+      # assert_match(/multibase_test/, `mysql -uroot -e "SHOW DATABASES"`)
     end
 
     def refute_dummy_databases
       assert_nil dummy_database_sqlite
-      refute_match(/multibase_test/, `mysql -uroot -e "SHOW DATABASES"`)
+      # refute_match(/multibase_test/, `mysql -uroot -e "SHOW DATABASES"`)
     end
 
   end
