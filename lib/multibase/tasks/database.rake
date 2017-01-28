@@ -107,7 +107,6 @@ namespace :db do
         task :prepare do
           Multibase.exec(connection_name) { Rake::Task['db:test:prepare'].execute }
         end
-
       end
 
     end
