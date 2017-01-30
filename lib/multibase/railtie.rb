@@ -7,9 +7,8 @@ module Multibase
     config.multibase.run_with_db_tasks = true
 
     config.after_initialize do |app|
-      database_names = Multibase::Railtie.database_configuration.keys
       multibases_dir = app.root.join(config.multibase.db_dir)
-      database_names.each do |name|
+      connection_names.each do |name|
         db_dir = multibases_dir.join name
         FileUtils.mkdir(db_dir) unless File.directory?(db_dir)
       end
@@ -19,13 +18,18 @@ module Multibase
       load 'multibase/tasks/database.rake'
     end
 
-    initializer 'multibase.add_watchable_files' do |app|
-
-    end
-
     generators do
       require 'rails/multibase/generators/migration_generator'
     end
+
+    initializer 'multibase.add_watchable_files' do |app|
+      watchable_files = []
+      connection_names.each do |name|
+        watchable_files << app.root.join("#{config.multibase.db_path}/#{name}")
+      end
+      config.watchable_files.concat watchable_files
+    end
+
 
     def self.database_configuration
       path = Rails.root.join config.multibase.path
@@ -55,6 +59,10 @@ module Multibase
     def fullpath(extra=nil)
       path = Rails.root.join(config.multibase.db_dir)
       (extra ? path.join(path, extra) : path).to_s
+    end
+
+    def connection_names
+      Multibase::Railtie.database_configuration.keys
     end
   end
 end
