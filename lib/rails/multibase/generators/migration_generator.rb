@@ -14,8 +14,8 @@ module Multibase
     include(Module.new{
 
       def migration_template(*args)
-        binding.pry
-        args[1].sub! 'db/migrate', "#{Railtie.config_path}/migrate" if args[1]
+        connection_name = attributes.first.name
+        args[1].sub! 'db/migrate', "db/#{connection_name}/migrate" if args[1]
         super(*args)
       end
 
