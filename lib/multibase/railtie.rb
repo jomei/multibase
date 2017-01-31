@@ -10,7 +10,7 @@ module Multibase
       multibases_dir = app.root.join(config.multibase.db_dir)
       connection_names.each do |name|
         db_dir = multibases_dir.join name
-        FileUtils.mkdir(db_dir) unless File.directory?(db_dir)
+        FileUtils.mkdir_p(db_dir) unless File.directory?(db_dir)
       end
     end
 
