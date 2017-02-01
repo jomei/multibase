@@ -11,11 +11,18 @@ module Multibase
       Rails::Generators::MigrationGenerator.desc
     end
 
+    def create_migration_file
+      @connection_name = attributes.first.name
+      raise ArgumentError unless Multibase::Railtie.connection? @connection_name
+      attributes.shift
+      super
+    end
+
     include(Module.new{
 
       def migration_template(*args)
-        connection_name = attributes.first.name
-        args[1].sub! 'db/migrate', "db/#{connection_name}/migrate" if args[1]
+
+        args[1].sub! 'db/migrate', "db/#{@connection_name}/migrate" if args[1]
         super(*args)
       end
 

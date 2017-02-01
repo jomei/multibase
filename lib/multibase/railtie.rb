@@ -64,5 +64,9 @@ module Multibase
     def connection_names
       Multibase::Railtie.database_configuration.keys
     end
+
+    def connection?(name)
+      connection_names.include? name
+    end
   end
 end
