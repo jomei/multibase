@@ -13,7 +13,10 @@ module Multibase
 
     def create_migration_file
       @connection_name = attributes.first.name
-      raise ArgumentError unless Multibase::Railtie.connection? @connection_name
+      binding.pry
+      unless Multibase::Railtie.connection? @connection_name
+        raise ArgumentError.new "Connection #{@connection_name} not found"
+      end
       attributes.shift
       super
     end
@@ -21,7 +24,6 @@ module Multibase
     include(Module.new{
 
       def migration_template(*args)
-
         args[1].sub! 'db/migrate', "db/#{@connection_name}/migrate" if args[1]
         super(*args)
       end

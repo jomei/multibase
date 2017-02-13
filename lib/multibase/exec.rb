@@ -5,6 +5,7 @@ module Multibase
   self.connected = false
 
   def self.exec(connection_name)
+    binding.pry
     return yield if connected
     multibase_config = Multibase::Railtie.database_configuration
     ActiveRecord::Tasks::DatabaseTasks.current_config = config(connection_name)

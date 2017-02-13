@@ -1,4 +1,4 @@
-sqllite_db:
+lite:
   default: &default
     adapter: sqlite3
     pool: 5
@@ -6,15 +6,15 @@ sqllite_db:
 
   development:
     <<: *default
-    database: db/development.sqlite3
+    database: db/lite/development.sqlite3
 
   test:
     <<: *default
-    database: db/test.sqlite3
+    database: db/lite/test.sqlite3
 
   production:
     <<: *default
-    database: db/production.sqlite3
+    database: db/lite/production.sqlite3
 
 postgre_db:
   development:

@@ -14,6 +14,7 @@ namespace :db do
         task :all do
           Multibase.exec(connection_name) { Rake::Task['db:drop:all'].execute }
         end
+        Multibase.exec(connection_name) { Rake::Task['db:drop'].execute }
       end
 
       namespace :purge do

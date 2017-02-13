@@ -56,8 +56,8 @@ module Multibase
       raise e, "Cannot load `Rails.application.database_configuration`:\n#{e.message}", e.backtrace
     end
 
-    def fullpath(extra=nil)
-      path = Rails.root.join(config.multibase.db_dir)
+    def fullpath(connection, extra=nil)
+      path = Rails.root.join(config.multibase.db_dir, connection)
       (extra ? path.join(path, extra) : path).to_s
     end
 
