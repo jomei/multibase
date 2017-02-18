@@ -10,11 +10,11 @@ module Multibase
 
     ActiveRecord::Base.configurations = multibase_config[connection_name]
     ActiveRecord::Base.establish_connection(config(connection_name))
-    migration_paths = [Multibase::Railtie.fullpath('migrate').join(connection_name)]
+    migration_paths = [Multibase::Railtie.fullpath(connection_name).join('migrate')]
     ActiveRecord::Tasks::DatabaseTasks.migrations_paths = migration_paths
     ActiveRecord::Tasks::DatabaseTasks.db_dir = Multibase::Railtie.fullpath
     ActiveRecord::Migrator.migrations_paths = migration_paths
-
+    binding.pry
     self.connected = true
     yield
   end
