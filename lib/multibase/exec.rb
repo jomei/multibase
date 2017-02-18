@@ -7,12 +7,12 @@ module Multibase
     return yield if connected
     multibase_config = Multibase::Railtie.database_configuration
     ActiveRecord::Tasks::DatabaseTasks.current_config = config(connection_name)
-
+    connection_dir_path = Multibase::Railtie.fullpath(connection_name)
     ActiveRecord::Base.configurations = multibase_config[connection_name]
     ActiveRecord::Base.establish_connection(config(connection_name))
-    migration_paths = [Multibase::Railtie.fullpath(connection_name).join('migrate')]
+    migration_paths = [connection_dir_path.join('migrate')]
     ActiveRecord::Tasks::DatabaseTasks.migrations_paths = migration_paths
-    ActiveRecord::Tasks::DatabaseTasks.db_dir = Multibase::Railtie.fullpath
+    ActiveRecord::Tasks::DatabaseTasks.db_dir = connection_dir_path
     ActiveRecord::Migrator.migrations_paths = migration_paths
     binding.pry
     self.connected = true
