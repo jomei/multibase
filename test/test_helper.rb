@@ -18,5 +18,9 @@ require_relative 'dummy_app_helpers'
 module Multibase
   class TestCase < ActiveSupport::TestCase
     include DummyAppHelpers
+
+
+    setup    :delete_dummy_files
+    teardown :delete_dummy_files
   end
 end

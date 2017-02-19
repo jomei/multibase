@@ -108,7 +108,6 @@ end
   schema:load schema:cache:dump structure:load
   test:purge test:load_schema test:load_structure test:prepare
 }.each do |name|
-
   task = Rake::Task["db:#{name}"] rescue nil
   next unless task
   task.enhance do

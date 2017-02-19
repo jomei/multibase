@@ -1,4 +1,3 @@
-require 'pry'
 module Multibase
   mattr_accessor :connected, instance_accessor: false
   self.connected = false
@@ -14,7 +13,6 @@ module Multibase
     ActiveRecord::Tasks::DatabaseTasks.migrations_paths = migration_paths
     ActiveRecord::Tasks::DatabaseTasks.db_dir = connection_dir_path
     ActiveRecord::Migrator.migrations_paths = migration_paths
-    binding.pry
     self.connected = true
     yield
   end

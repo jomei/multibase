@@ -30,7 +30,6 @@ module Multibase
       config.watchable_files.concat watchable_files
     end
 
-
     def self.database_configuration
       path = Rails.root.join config.multibase.path
       yaml = Pathname.new(path) if path

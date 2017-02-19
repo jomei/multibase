@@ -5,6 +5,14 @@ module Multibase
 
     private
 
+    def database
+      'test'
+    end
+
+    def connection
+      'lite'
+    end
+
     def dummy_app
       ::Dummy::Application
     end
@@ -22,42 +30,25 @@ module Multibase
     end
 
     def dummy_db
-      dummy_app.root.join 'db'
+      dummy_app.root.join 'db', connection
     end
 
     def dummy_schema
       dummy_db.join 'schema.rb'
     end
 
-    def dummy_multibase_schema
-      dummy_db.join('multibase', 'schema.rb')
+    def dummy_migration
+      dummy_db.join 'migrate'
     end
 
     def dummy_database_sqlite
       Dir.chdir(dummy_db){ Dir['*.sqlite3'] }.first
     end
 
-    def dummy_migration
-      @dummy_migration ||= begin
-        vers = Time.now.utc.strftime '%Y%m%d%H%M%S'
-        file = dummy_root.join 'db', 'multibase', 'migrate', "#{vers}_create_foos.rb"
-        if rails_50_up?
-          migr = %|class CreateFoos < ActiveRecord::Migration[4.2] ; def change ; create_table(:foos) ; end ; end|
-        else
-          migr = %|class CreateFoos < ActiveRecord::Migration ; def change ; create_table(:foos) ; end ; end|
-        end
-        File.open(file,'w') { |f| f.write(migr) }
-        {version: vers, file: file}
-      end
-    end
-
     def delete_dummy_files
       FileUtils.rm_rf dummy_schema
-      FileUtils.rm_rf dummy_multibase_schema
-      Dir.chdir(dummy_db) { Dir['**/structure.sql'].each { |structure| FileUtils.rm_rf(structure) } }
       Dir.chdir(dummy_db) { FileUtils.rm_rf(dummy_database_sqlite) } if dummy_database_sqlite
-      FileUtils.rm_rf(dummy_migration[:file]) if defined?(@dummy_migration) && @dummy_migration
-      `mysql -uroot -e "DROP DATABASE IF EXISTS multibase_test"`
+      FileUtils.rm_rf(dummy_migration)
     end
 
     # Runners
@@ -66,28 +57,24 @@ module Multibase
       'rake'
     end
 
-    def run_db(args, stream=:stdout, with_multibase_tasks=true)
-      capture(stream) do
-        Dir.chdir(dummy_root) { Kernel.system "env WITH_multibase_TASKS=#{with_multibase_tasks} #{run_cmd} db:#{args}" }
-      end
-    end
-
-    def run_on_connection(connection, args, stream=:stdout)
+    def run_on_database(connection, args, stream=:stdout)
       capture(stream) do
         Dir.chdir(dummy_root) { Kernel.system "#{run_cmd} db:#{connection}:#{args}" }
       end
     end
 
+    def run_on_testable_database(args, stream=:stdout)
+      run_on_database(connection, args, stream)
+    end
+
     # Assertions
 
     def assert_dummy_databases
-      assert_equal 'base.sqlite3', dummy_database_sqlite
-      # assert_match(/multibase_test/, `mysql -uroot -e "SHOW DATABASES"`)
+      assert_equal "#{database}.sqlite3", dummy_database_sqlite
     end
 
     def refute_dummy_databases
       assert_nil dummy_database_sqlite
-      # refute_match(/multibase_test/, `mysql -uroot -e "SHOW DATABASES"`)
     end
 
   end
