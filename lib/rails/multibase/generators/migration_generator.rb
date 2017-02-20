@@ -13,7 +13,6 @@ module Multibase
 
     def create_migration_file
       @connection_name = attributes.first.name
-      binding.pry
       unless Multibase::Railtie.connection? @connection_name
         raise ArgumentError.new "Connection #{@connection_name} not found"
       end

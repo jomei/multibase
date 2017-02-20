@@ -16,6 +16,24 @@ lite:
     <<: *default
     database: db/lite/production.sqlite3
 
+lite_2:
+  default: &default
+    adapter: sqlite3
+    pool: 5
+    timeout: 5000
+
+  development:
+    <<: *default
+    database: db/lite_2/development.sqlite3
+
+  test:
+    <<: *default
+    database: db/lite_2/test.sqlite3
+
+  production:
+    <<: *default
+    database: db/lite_2/production.sqlite3
+
 postgre_db:
   development:
     adapter: postgresql
