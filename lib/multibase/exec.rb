@@ -3,7 +3,6 @@ module Multibase
   self.connected = false
 
   def self.exec(connection_name)
-    return yield if connected
     multibase_config = Multibase::Railtie.database_configuration
     ActiveRecord::Tasks::DatabaseTasks.current_config = config(connection_name)
     connection_dir_path = Multibase::Railtie.fullpath(connection_name)
@@ -13,7 +12,6 @@ module Multibase
     ActiveRecord::Tasks::DatabaseTasks.migrations_paths = migration_paths
     ActiveRecord::Tasks::DatabaseTasks.db_dir = connection_dir_path
     ActiveRecord::Migrator.migrations_paths = migration_paths
-    self.connected = true
     yield
   end
 end

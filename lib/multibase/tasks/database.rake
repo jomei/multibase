@@ -110,8 +110,8 @@ end
 }.each do |name|
   task = Rake::Task["db:#{name}"] rescue nil
   next unless task
+
   task.enhance do
     Rake::Task["db:load_config"].invoke
-    Rake::Task["db:lite:#{name}"].invoke
   end
 end

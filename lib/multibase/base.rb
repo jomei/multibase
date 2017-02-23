@@ -7,6 +7,7 @@ module Multibase
 
     def use_database(database_key)
       self.database = database_key
+      establish_connection Multibase::Railtie.database_configuration[database_key.to_s]
     end
   end
 end
