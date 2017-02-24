@@ -4,30 +4,21 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'multibase/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "multibase"
-  spec.version       = Multibase::VERSION
-  spec.authors       = ["Anatoly Nosov"]
-  spec.email         = ["jomeisama@gmail.com"]
+  spec.name        = 'multibase'
+  spec.version     = Multibase::VERSION
+  spec.authors     = ['Anatoly Nosov']
+  spec.email       = ['jomeisama@gmail.com']
 
-  spec.summary       = %q{Rails multiple database support}
-  spec.description   = %q{Rails multiple database support}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
-  spec.license       = "MIT"
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against " \
-      "public gem pushes."
-  end
+  spec.summary     = %q{Rails multiple database support}
+  spec.description = 'Multibase provides support for Rails to manage several databases by extending ActiveRecord tasks that create, migrate, and test your databases.'
+  spec.homepage    = 'https://github.com/jomei/multibase'
+  spec.license     = 'MIT'
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
   end
 
-  spec.require_paths = ["lib"]
+  spec.require_paths = ['lib']
 
   spec.add_runtime_dependency     'rails', '>= 4.0'
 
