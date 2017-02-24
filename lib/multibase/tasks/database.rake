@@ -1,5 +1,4 @@
 namespace :db do
-  #todo: add tasks for all databases
   connections = Multibase::Railtie.database_configuration.keys
   connections.each do |connection_name|
     namespace connection_name.to_sym do
@@ -98,6 +97,24 @@ namespace :db do
         end
       end
 
+    end
+  end
+
+  namespace :create do
+    task :all do
+      connections.each{ |connection| Rake::Task["db:#{connection}:create"].execute }
+    end
+  end
+
+  namespace :drop do
+    task :all do
+      connections.each{ |connection| Rake::Task["db:#{connection}:drop"].execute }
+    end
+  end
+
+  namespace :purge do
+    task :all do
+      connections.each{ |connection| Rake::Task["db:#{connection}:drop"].execute }
     end
   end
 end

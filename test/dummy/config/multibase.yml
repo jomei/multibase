@@ -33,20 +33,3 @@ lite_2:
   production:
     <<: *default
     database: db/lite_2/production.sqlite3
-
-postgre_db:
-  development:
-    adapter: postgresql
-    encoding: utf8
-    database: multibase_db
-    username: multibase
-    password: multibase
-    host: 127.0.0.1
-
-  test:
-    adapter: postgresql
-    encoding: utf8
-    database: multibase_db
-    username: multibase
-    password: multibase
-    host: 127.0.0.1
