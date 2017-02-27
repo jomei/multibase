@@ -1,0 +1,29 @@
+%w(
+  abort_if_pending_migrations
+  check_protected_environments
+  create
+  create:all
+  drop
+  drop:_unsafe
+  drop:all
+  fixtures:load
+  forward
+  migrate
+  migrate:down
+  migrate:redo
+  migrate:reset
+  migrate:up
+  purge
+  reset
+  rollback
+  seed
+  setup
+  test:load
+  test:prepare
+  test:purge
+  version
+).each do |name|
+  Rake::Task["db:#{name}"].clear
+  Multibase.reset
+  task "db:#{name}" => Multibase.keys.map { |key| "db:#{key}:#{name}" }
+end

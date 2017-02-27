@@ -1,15 +1,15 @@
 default:
   test:
     adapter:  sqlite3
-    database: ./db/lite.sqlite3
+    database: ./db/lite/lite.sqlite3
   development:
     adapter:  sqlite3
-    database: ./db/lite.sqlite3
+    database: ./db/lite/lite.sqlite3
 
 lite_2:
   test:
     adapter:  sqlite3
-    database: ./db/lite_2.sqlite3
+    database: ./db/lite_2/lite_2.sqlite3
   development:
     adapter:  sqlite3
-    database: ./db/lite_2.sqlite3
+    database: ./db/lite_2/lite_2.sqlite3

@@ -3,6 +3,7 @@ require 'rails'
 module Multibase
   require_relative 'multibase/config'
   require_relative 'multibase/railtie'
+  require_relative 'multibase/exec'
 
   class << self
     include  Enumerable
@@ -27,7 +28,11 @@ module Multibase
     end
 
     def apply_default
-      tap { |db| db[default_key].apply }
+      apply default_key
+    end
+
+    def apply(key)
+      tap { |db| db[key].apply }
     end
   end
 end

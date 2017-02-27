@@ -38,6 +38,11 @@ module Multibase
       Rails.application.config.multibase.current_settings = new_settings
       ActiveRecord::Base.configurations = new_settings
       ActiveRecord::Base.establish_connection
+      connection_dir_path = Multibase::Railtie.fullpath(key)
+      migration_paths = [connection_dir_path.join('migrate')]
+      ActiveRecord::Tasks::DatabaseTasks.migrations_paths = migration_paths
+      ActiveRecord::Tasks::DatabaseTasks.db_dir = connection_dir_path
+      ActiveRecord::Migrator.migrations_paths = migration_paths
     end
   end
 end
