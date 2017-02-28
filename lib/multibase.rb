@@ -4,6 +4,7 @@ module Multibase
   require_relative 'multibase/config'
   require_relative 'multibase/railtie'
   require_relative 'multibase/exec'
+  require_relative 'multibase/base'
 
   class << self
     include  Enumerable

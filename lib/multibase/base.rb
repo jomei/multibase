@@ -1,3 +1,5 @@
+require 'active_record'
+
 module Multibase
   class Base < ActiveRecord::Base
     self.abstract_class = true

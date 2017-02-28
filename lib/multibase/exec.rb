@@ -6,7 +6,6 @@ module Multibase
     # todo add key check
     @config = Multibase::Config.new key, Multibase::Railtie.database_configuration[key]
     @config.apply
-    # binding.pry
     yield
   end
 end

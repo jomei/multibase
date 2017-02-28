@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'multibase/version'
 
 Gem::Specification.new do |spec|
-  spec.name        = 'multibase'
+  spec.name        = 'multibase-rails'
   spec.version     = Multibase::VERSION
   spec.authors     = ['Anatoly Nosov']
   spec.email       = ['jomeisama@gmail.com']

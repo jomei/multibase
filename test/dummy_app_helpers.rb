@@ -10,7 +10,7 @@ module Multibase
     end
 
     def connection
-      'lite'
+      'lite_2'
     end
 
     def dummy_app
@@ -58,9 +58,7 @@ module Multibase
     end
 
     def run_on_database(connection, args, stream=:stdout)
-      capture(stream) do
-        Dir.chdir(dummy_root) { Kernel.system "#{run_cmd} db:#{connection}:#{args}" }
-      end
+      Dir.chdir(dummy_root) { Kernel.system "#{run_cmd} db:#{connection}:#{args}" }
     end
 
     def run_on_testable_database(args, stream=:stdout)

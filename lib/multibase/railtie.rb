@@ -1,5 +1,3 @@
-require 'pry'
-
 module Multibase
   class Railtie < Rails::Railtie
     config.multibase = ActiveSupport::OrderedOptions.new
@@ -20,13 +18,21 @@ module Multibase
       Multibase.send(:reset).apply_default
     end
 
+    config.after_initialize do |app|
+      multibases_dir = app.root.join(config.multibase.db_dir)
+      connection_keys.each do |name|
+        db_dir = multibases_dir.join name
+        FileUtils.mkdir_p(db_dir) unless File.directory?(db_dir)
+      end
+    end
+
     def fullpath(extra=nil)
       path = Rails.root.join(config.multibase.db_dir)
       (extra ? path.join(path, extra) : path)
     end
 
     def connection_keys
-      Multibase.keys
+      self.class.database_configuration.keys
     end
 
     def connection?(name)
@@ -44,7 +50,7 @@ module Multibase
     def self.database_configuration
       path = Rails.root.join config.multibase.path
       yaml = Pathname.new(path) if path
-      if yaml && yaml.exist?
+      @configuration ||= if yaml && yaml.exist?
         require 'yaml'
         require 'erb'
         YAML.load(ERB.new(yaml.read).result) || {}
@@ -55,6 +61,7 @@ module Multibase
       else
         raise "Could not load database configuration. No such file - #{paths["config/database"].instance_variable_get(:@paths)}"
       end
+      @configuration
     end
   end
 end

@@ -1,12 +1,13 @@
 namespace :db do
   keys = Multibase::Railtie.connection_keys
   keys.each do |key|
+
     namespace key.to_sym do
       task :create do
         Multibase.exec(key) { Rake::Task['db:create'].execute }
       end
 
-      task :drop do
+      task :drop => ['db:load_config'] do
         Multibase.exec(key) { Rake::Task['db:drop'].execute }
       end
 
@@ -102,19 +103,25 @@ namespace :db do
 
   namespace :create do
     task :all do
-      connections.each{ |connection| Rake::Task["db:#{connection}:create"].execute }
+      keys.each{ |key| Rake::Task["db:#{key}:create"].execute }
     end
   end
 
   namespace :drop do
     task :all do
-      connections.each{ |connection| Rake::Task["db:#{connection}:drop"].execute }
+      keys.each{ |key| Rake::Task["db:#{key}:drop"].execute }
     end
   end
 
   namespace :purge do
     task :all do
-      connections.each{ |connection| Rake::Task["db:#{connection}:drop"].execute }
+      keys.each{ |key| Rake::Task["db:#{key}:drop"].execute }
+    end
+  end
+
+  namespace :migrate do
+    task :all do
+      keys.each{ |key| Rake::Task["db:#{key}:migrate"].execute }
     end
   end
 end
