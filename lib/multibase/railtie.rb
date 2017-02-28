@@ -10,9 +10,6 @@ module Multibase
     initializer 'multibase.handle_database_configuration',
                 before: 'active_record.initialize_database' do |app|
 
-      binding.pry
-      p 'LOLOLAOSDFLASDFASFDAS'
-
       settings = app.config.database_configuration
       config.multibase.settings = settings
 
@@ -23,21 +20,17 @@ module Multibase
       Multibase.send(:reset).apply_default
     end
 
-    def init!
-
-    end
-
     def fullpath(extra=nil)
       path = Rails.root.join(config.multibase.db_dir)
       (extra ? path.join(path, extra) : path)
     end
 
-    def connection_names
+    def connection_keys
       Multibase.keys
     end
 
     def connection?(name)
-      connection_names.include? name
+      connection_keys.include? name
     end
 
     rake_tasks do
@@ -51,21 +44,17 @@ module Multibase
     def self.database_configuration
       path = Rails.root.join config.multibase.path
       yaml = Pathname.new(path) if path
-
-      config = if yaml && yaml.exist?
-                 require "yaml"
-                 require "erb"
-                 YAML.load(ERB.new(yaml.read).result) || {}
-               elsif ENV["DATABASE_URL"]
-                 # Value from ENV['DATABASE_URL'] is set to default database connection
-                 # by Active Record.
-                 {}
-               else
-                 raise "Could not load database configuration. No such file - #{paths["config/database"].instance_variable_get(:@paths)}"
-               end
-
-      config
+      if yaml && yaml.exist?
+        require 'yaml'
+        require 'erb'
+        YAML.load(ERB.new(yaml.read).result) || {}
+      elsif ENV['DATABASE_URL']
+        # Value from ENV['DATABASE_URL'] is set to default database connection
+        # by Active Record.
+        {}
+      else
+        raise "Could not load database configuration. No such file - #{paths["config/database"].instance_variable_get(:@paths)}"
+      end
     end
-
   end
 end
