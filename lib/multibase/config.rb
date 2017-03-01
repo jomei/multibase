@@ -27,7 +27,6 @@ module Multibase
 
     def load_seed
       load(db_seed) if db_seed.exist?
-      self
     end
 
     def current_settings

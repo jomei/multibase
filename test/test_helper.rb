@@ -22,5 +22,9 @@ module Multibase
 
     setup    :delete_dummy_files
     teardown :delete_dummy_files
+
+    def establish_connection(connection)
+      Multibase.apply connection
+    end
   end
 end

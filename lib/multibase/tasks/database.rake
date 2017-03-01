@@ -3,6 +3,13 @@ namespace :db do
   keys.each do |key|
 
     namespace key.to_sym do
+
+      namespace :create do
+        task :all do
+          Multibase.exec(key) { Rake::Task['db:create:all'].execute }
+        end
+      end
+
       task :create do
         Multibase.exec(key) { Rake::Task['db:create'].execute }
       end
@@ -17,6 +24,14 @@ namespace :db do
 
       task :migrate do
         Multibase.exec(key) { Rake::Task['db:migrate'].execute }
+      end
+
+      task :setup do
+        Multibase.exec(key) { Rake::Task['db:setup'].execute }
+      end
+
+      task :seed do
+        Multibase.exec(key) { Rake::Task['db:seed'].execute }
       end
 
       namespace :migrate do
@@ -100,39 +115,15 @@ namespace :db do
 
     end
   end
-
-  namespace :create do
-    task :all do
-      keys.each{ |key| Rake::Task["db:#{key}:create"].execute }
-    end
-  end
-
-  namespace :drop do
-    task :all do
-      keys.each{ |key| Rake::Task["db:#{key}:drop"].execute }
-    end
-  end
-
-  namespace :purge do
-    task :all do
-      keys.each{ |key| Rake::Task["db:#{key}:drop"].execute }
-    end
-  end
-
-  namespace :migrate do
-    task :all do
-      keys.each{ |key| Rake::Task["db:#{key}:migrate"].execute }
-    end
-  end
 end
 
 %w{
   create:all create drop:all drop purge:all purge
   migrate migrate:status abort_if_pending_migrations
-  schema:load schema:cache:dump structure:load
+  schema:load schema:cache:dump structure:load setup seed
   test:purge test:load_schema test:load_structure test:prepare
 }.each do |name|
-  task = Rake::Task["db:#{name}"] rescue nil
+  task = Rake::Task["db:#{name}"]
   next unless task
 
   task.enhance do

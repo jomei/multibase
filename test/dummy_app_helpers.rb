@@ -5,12 +5,18 @@ module Multibase
 
     private
 
+    CONNECTIONS = %w(default lite_2)
+
     def database
       'test'
     end
 
     def connection
-      'lite_2'
+      CONNECTIONS.first
+    end
+
+    def second_connection
+      CONNECTIONS.second
     end
 
     def dummy_app
@@ -29,8 +35,8 @@ module Multibase
       dummy_app.root.join 'tmp'
     end
 
-    def dummy_db
-      dummy_app.root.join 'db', connection
+    def dummy_db(c = connection)
+      dummy_app.root.join 'db', c
     end
 
     def dummy_schema
@@ -46,9 +52,11 @@ module Multibase
     end
 
     def delete_dummy_files
-      FileUtils.rm_rf dummy_schema
-      Dir.chdir(dummy_db) { FileUtils.rm_rf(dummy_database_sqlite) } if dummy_database_sqlite
-      FileUtils.rm_rf(dummy_migration)
+      CONNECTIONS.each { |connection| FileUtils.rm_rf dummy_db connection }
+    end
+
+    def dummy_schema_cache
+      dummy_db.join 'schema_cache.dump'
     end
 
     # Runners
@@ -58,11 +66,15 @@ module Multibase
     end
 
     def run_on_database(connection, args, stream=:stdout)
-      Dir.chdir(dummy_root) { Kernel.system "#{run_cmd} db:#{connection}:#{args}" }
+        Dir.chdir(dummy_root) { `#{run_cmd} db:#{connection}:#{args}` }
     end
 
     def run_on_testable_database(args, stream=:stdout)
       run_on_database(connection, args, stream)
+    end
+
+    def run_secondbase(args, stream=:stdout)
+      run_on_database second_connection, args, stream
     end
 
     # Assertions

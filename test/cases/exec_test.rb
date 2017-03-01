@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class ExecTest < Multibase::TestCase
-  def test_exec
+  def apply_exec
     Multibase.exec(connection) do
       assert_equal Multibase::Base.connection.class, ActiveRecord::Base.connection.class
       migration_paths = [Multibase::Railtie.fullpath(connection).join('migrate')]

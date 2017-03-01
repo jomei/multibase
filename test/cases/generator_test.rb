@@ -6,19 +6,20 @@ class GeneratorTest < Multibase::TestCase
     delete_generated_migration
     delete_generated_migration_base
   end
-  #
-  # def test_migration
-  #   output = Dir.chdir(dummy_root) { `rails g multibase:migration CreateFavorites #{database} post_id:integer count:integer` }
-  #   assert_match %r{create.*db/#{database}/migrate/.*create_favorites\.rb}, output
-  #   migration = generated_migration_data
-  #   assert_match %r{create_table :favorites}, migration
-  #   assert_match %r{t.integer :post_id}, migration
-  #   assert_match %r{t.integer :count}, migration
-  # end
+
+  def test_migration
+    output = Dir.chdir(dummy_root) { `rails g multibase:migration CreateFavorites #{connection} post_id:integer count:integer` }
+    assert_match %r{create.*db/#{connection}/migrate/.*create_favorites\.rb}, output
+    migration = generated_migration_data
+    assert_match %r{create_table :favorites}, migration
+    assert_match %r{t.integer :post_id}, migration
+    assert_match %r{t.integer :count}, migration
+  end
+
   private
 
   def generated_migration
-    Dir["#{dummy_db}/#{connection}/migrate/*favorites.{rb}"].first
+    Dir["#{dummy_db}/migrate/*favorites.{rb}"].first
   end
 
   def generated_migration_data
@@ -36,5 +37,4 @@ class GeneratorTest < Multibase::TestCase
   def generated_migration_base
     Dir["#{dummy_db}/migrate/*add_base*.{rb}"].first
   end
-
 end
