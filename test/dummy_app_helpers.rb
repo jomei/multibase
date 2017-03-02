@@ -49,7 +49,7 @@ module Multibase
 
     def dummy_database_sqlite
       if Dir.exist? dummy_db
-        Dir.chdir(dummy_db){ Dir['*.sqlite3'] }.last
+        Dir.chdir(dummy_db){ Dir['*.sqlite3'].sort }.last
       else
         nil
       end
