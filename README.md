@@ -5,7 +5,7 @@ Multiple database support for Rails
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'multibase'
+gem 'multibase-rails'
 ```
 
 And then execute:
@@ -14,23 +14,52 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install multibase
+    $ gem install multibase-rails
 
 ## Usage
 
-TODO: Write usage instructions here
+### database.yml 
+Change config/database.yml so that settings for every database are placed under the following root key:
+```yaml
+# config/database.yml
+---
+default: # default key for the default database
+  test:
+    adapter: sqlite3
+    url:     ./base/test.sqlite3
+  development:
+    adapter: sqlite3
+    url:     ./base/development.sqlite3
+  production:
+    adapter: postgresql
+    url:     <%= ENV['DEFAULT_BASE_URL'] %>
+custom_db: # the unique name for another database
+  test:
+    adapter: sqlite3
+    url:     ./custom_db/test.sqlite3
+  development:
+    adapter: sqlite3
+    url:     ./custom_db/development.sqlite3
+  production:
+    adapter: postgresql
+    url:     <%= ENV['PERSONAL_BASE_URL'] %>
+```
 
-## Development
+### Rake tasks
+All `db:` rake tasks redefined as `db:your_database_name:command`, e.g. `rake db:cusom_db:create`
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/jomei/multibase. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
-
-
+### Rails Generators
+#### Model
+Coming soon
+#### Migrations
+Use `multibase:migration` to generate migration for specific database
+```
+rails g multibase:migration <migration_name> <database_name> <options>
+```
+Example
+```ruby
+rails g multibase:migration CreateMyTable custom_db foo:integer baz:string 
+```
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
