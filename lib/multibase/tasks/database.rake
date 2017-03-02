@@ -18,12 +18,30 @@ namespace :db do
         Multibase.exec(key) { Rake::Task['db:drop'].execute }
       end
 
+      namespace :drop do
+        task :all do
+          Multibase.exec(key) { Rake::Task['db:drop:all'].execute }
+        end
+      end
+
       task :purge do
         Multibase.exec(key) { Rake::Task['db:purge'].execute }
       end
 
+      namespace :purge do
+        task :all do
+          Multibase.exec(key) { Rake::Task['db:purge:all'].execute }
+        end
+      end
+
       task :migrate do
         Multibase.exec(key) { Rake::Task['db:migrate'].execute }
+      end
+
+      namespace :migrate do
+        task :all do
+          Multibase.exec(key) { Rake::Task['db:migrate:all'].execute }
+        end
       end
 
       task :setup do

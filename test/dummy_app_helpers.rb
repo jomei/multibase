@@ -48,7 +48,11 @@ module Multibase
     end
 
     def dummy_database_sqlite
-      Dir.chdir(dummy_db){ Dir['*.sqlite3'] }.first
+      if Dir.exist? dummy_db
+        Dir.chdir(dummy_db){ Dir['*.sqlite3'] }.last
+      else
+        nil
+      end
     end
 
     def delete_dummy_files
