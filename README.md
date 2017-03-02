@@ -46,7 +46,7 @@ custom_db: # the unique name for another database
 ```
 
 ### Rake tasks
-All `db:` rake tasks redefined as `db:your_database_name:command`, e.g. `rake db:cusom_db:create`
+All `db:` rake tasks defined for each database as `db:your_database_name:command`, e.g. `rake db:cusom_db:create`
 
 ### Rails Generators
 #### Model
