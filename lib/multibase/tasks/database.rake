@@ -44,7 +44,7 @@ namespace :db do
         end
       end
 
-      task :setup do
+      task :setup => ['db:load_config'] do
         Multibase.exec(key) { Rake::Task['db:setup'].execute }
       end
 

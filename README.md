@@ -49,8 +49,6 @@ custom_db: # the unique name for another database
 All `db:` rake tasks defined for each database as `db:your_database_name:command`, e.g. `rake db:cusom_db:create`
 
 ### Rails Generators
-#### Model
-Coming soon
 #### Migrations
 Use `multibase:migration` to generate migration for specific database
 ```
