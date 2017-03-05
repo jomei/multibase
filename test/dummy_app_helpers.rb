@@ -39,8 +39,8 @@ module Multibase
       dummy_app.root.join 'db', c
     end
 
-    def dummy_schema
-      dummy_db.join 'schema.rb'
+    def dummy_schema(c = connection)
+      dummy_db(c).join 'schema.rb'
     end
 
     def dummy_migration
