@@ -24,7 +24,6 @@ module Multibase
                     .each_with_object(HashWithIndifferentAccess.new) do |(key, val), hash|
         hash[key] = Config.new(key, val)
       end
-
       self
     end
 

@@ -12,25 +12,23 @@ module Multibase
     end
 
     def create_migration_file
-
       @connection_name = attributes.first.name
       if Multibase::Railtie.connection? @connection_name
         attributes.shift
       else
         @connection_name = Multibase.default_key
       end
-      binding.pry
       super
     end
 
-    include(Module.new{
-
-      def migration_template(*args)
-        args[1].sub! 'db/migrate', "db/#{@connection_name}/migrate" if args[1]
-        super(*args)
-      end
-
-    })
+    include(
+        Module.new do
+          def migration_template(*args)
+            args[1].sub! 'db/migrate', "db/#{@connection_name}/migrate" if args[1]
+            super(*args)
+          end
+        end
+    )
 
   end
 end
