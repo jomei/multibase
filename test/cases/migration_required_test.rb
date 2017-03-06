@@ -66,7 +66,7 @@ class MigrationRequiredTest < Multibase::TestCase
     establish_connection(second_connection)
     run_secondbase :create
     run_secondbase :migrate
-    binding.pry
+
     schema = File.read(dummy_schema(second_connection))
     assert_match %r{version: #{@timestamp2}}, schema
     refute_match %r{create_table "favorites"}, schema
