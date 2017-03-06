@@ -35,5 +35,6 @@ module Multibase
     def apply(key)
       tap { |db| db[key].apply }
     end
+
   end
 end

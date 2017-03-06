@@ -63,5 +63,6 @@ module Multibase
       end
       @configuration
     end
+
   end
 end
