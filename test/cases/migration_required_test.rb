@@ -57,9 +57,9 @@ class MigrationRequiredTest < Multibase::TestCase
     run_on_testable_database :migrate
     # First database and schema.
     schema = File.read(dummy_schema)
-    assert_match %r{version: #{@timestamp1}}, schema
-    assert_match %r{create_table "favorites"}, schema
-    refute_match %r{create_table "comments"}, schema
+    assert_match /version: #{@timestamp1}/, schema
+    assert_match /create_table "favorites"/, schema
+    refute_match /create_table "comments"/, schema
   end
 
   def test_db_migrate_on_second_connection
@@ -68,9 +68,9 @@ class MigrationRequiredTest < Multibase::TestCase
     run_secondbase :migrate
 
     schema = File.read(dummy_schema(second_connection))
-    assert_match %r{version: #{@timestamp2}}, schema
-    refute_match %r{create_table "favorites"}, schema
-    assert_match %r{create_table "comments"}, schema
+    assert_match /version: #{@timestamp2}/, schema
+    refute_match /create_table "favorites"/, schema
+    assert_match /create_table "comments"/, schema
   end
 
   def migrate_updown
@@ -79,13 +79,13 @@ class MigrationRequiredTest < Multibase::TestCase
     assert_match(/no migration.*#{@timestamp1}/i, run_on_testable_database("migrate:down VERSION=#{@timestamp1}", :stderr))
     run_on_testable_database "migrate:down VERSION=#{@timestamp1}"
     schema = File.read(dummy_schema)
-    refute_match %r{version: @timestamp1}, schema
-    refute_match %r{create_table "comments"}, schema
+    refute_match /version: @timestamp1/, schema
+    refute_match /create_table "comments"/, schema
     assert_match(/no migration.*#{@timestamp1}/i, run_on_testable_database("migrate:up VERSION=#{@timestamp1}", :stderr))
     run_on_testable_database "migrate:up VERSION=#{@timestamp1}"
     schema = File.read(dummy_schema)
-    assert_match %r{version: #{@timestamp1}}, schema
-    assert_match %r{create_table "comments"}, schema
+    assert_match /version: #{@timestamp1}/, schema
+    assert_match /create_table "comments"/, schema
   end
 
   def migrate_reset
@@ -93,36 +93,36 @@ class MigrationRequiredTest < Multibase::TestCase
     run_on_testable_database :migrate
     schema = File.read(dummy_schema)
 
-    assert_match %r{version: #{@timestamp1}}, schema
-    assert_match %r{create_table "comments"}, schema
+    assert_match /version: #{@timestamp1}/, schema
+    assert_match /create_table "comments"/, schema
     FileUtils.rm_rf dummy_schema
     run_on_testable_database 'migrate:reset'
     schema = File.read(dummy_schema)
-    assert_match %r{version: #{@timestamp1}}, schema
-    assert_match %r{create_table "comments"}, schema
+    assert_match /version: #{@timestamp1}/, schema
+    assert_match /create_table "comments"/, schema
   end
 
   def migrate_redo
     run_on_testable_database :create
     run_on_testable_database :migrate
     schema = File.read(dummy_schema)
-    assert_match %r{version: #{@timestamp1}}, schema
-    assert_match %r{create_table "comments"}, schema
+    assert_match /version: #{@timestamp1}/, schema
+    assert_match /create_table "comments"/, schema
     FileUtils.rm_rf dummy_schema
     run_secondbase 'migrate:redo'
     schema = File.read(dummy_schema)
-    assert_match %r{version: @timestamp1}, schema
-    assert_match %r{create_table "comments"}, schema
+    assert_match /version: @timestamp1/, schema
+    assert_match /create_table "comments"/, schema
     # Can redo latest Multibase migration using previous VERSION env.
     version = dummy_migration[:version]
     run_on_testable_database :migrate
-    assert_match %r{version: #{version}}, File.read(dummy_schema)
+    assert_match /version: #{version}/, File.read(dummy_schema)
     establish_connection connection
     Comment.create! body: 'test', user_id: 420
     run_secondbase "migrate:redo VERSION=#{@timestamp1}"
     schema = File.read(dummy_schema)
-    assert_match %r{version: #{version}}, schema
-    assert_match %r{create_table "comments"}, schema
+    assert_match /version: #{version}/, schema
+    assert_match /create_table "comments"/, schema
     establish_connection second_connection
     assert_nil Comment.first
   end
@@ -130,30 +130,30 @@ class MigrationRequiredTest < Multibase::TestCase
   def migrate_status
     run_on_testable_database :create
     stream = :stdout
-    assert_match %r{migrations table does not exist}, run_secondbase('migrate:status', stream)
+    assert_match /migrations table does not exist/, run_secondbase('migrate:status', stream)
     run_on_testable_database :migrate
-    assert_match %r{up.*#{@timestamp1}}, run_secondbase('migrate:status')
+    assert_match /up.*#{@timestamp1}/, run_secondbase('migrate:status')
     version = dummy_migration[:version]
     status = run_secondbase('migrate:status')
-    assert_match %r{up.*#{@timestamp1}}, status
-    assert_match %r{down.*#{version}}, status
+    assert_match /up.*#{@timestamp1}/, status
+    assert_match /down.*#{version}/, status
   end
 
   def forward_and_rollback
     run_on_testable_database :create
     run_on_testable_database :migrate
     schema = File.read(dummy_schema)
-    assert_match %r{version: #{@timestamp1}}, schema
-    refute_match %r{create_table "foos"}, schema
-    version = dummy_migration[:version] # ActiveRecord does not support start index 0.
+    assert_match /version: #{@timestamp1}/, schema
+    refute_match /create_table "foos"/, schema
+    version = dummy_migration[:version]
     run_secondbase :forward
     schema = File.read(dummy_schema)
-    assert_match %r{version: #{version}}, schema
-    assert_match %r{create_table "foos"}, schema
+    assert_match /version: #{version}/, schema
+    assert_match /create_table "foos"/, schema
     run_secondbase :rollback
     schema = File.read(dummy_schema)
-    assert_match %r{version: #{@timestamp1}}, schema
-    refute_match %r{create_table "foos"}, schema
+    assert_match /version: #{@timestamp1}/, schema
+    refute_match /create_table "foos"/, schema
   end
 
   def test_db_test_purge

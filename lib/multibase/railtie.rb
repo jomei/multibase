@@ -9,6 +9,13 @@ module Multibase
                 before: 'active_record.initialize_database' do |app|
 
       settings = app.config.database_configuration
+      # Checks whether default settings exist
+      default_settings = settings[config.multibase.default_key]
+      fail <<-TEXT.gsub(/ +\|/, '') unless default_settings
+        |Default database configuration has not been defined yet.
+        |You should either add settings to the `config/database.yml` under the key :#{config.multibase.default_key},
+        |or assign another value to `config.data_bases.default_key` in `config/application.rb`.
+      TEXT
       config.multibase.settings = settings
 
       app.config.define_singleton_method(:database_configuration) do
@@ -16,6 +23,13 @@ module Multibase
       end
 
       Multibase.send(:reset).apply_default
+    end
+
+    initializer 'multibase.add_watchable_files' do |app|
+      connection_keys.each do |connection|
+        dir = app.root.join(config.multibase.db_dir, connection)
+        config.watchable_files.concat ["#{dir}/schema.rb", "#{dir}/structure.sql"]
+      end
     end
 
     config.after_initialize do |app|
@@ -26,7 +40,7 @@ module Multibase
       end
     end
 
-    def fullpath(extra=nil)
+    def fullpath(extra = nil)
       path = Rails.root.join(config.multibase.db_dir)
       (extra ? path.join(path, extra) : path)
     end
@@ -51,16 +65,17 @@ module Multibase
       path = Rails.root.join config.multibase.path
       yaml = Pathname.new(path) if path
       @configuration ||= if yaml && yaml.exist?
-        require 'yaml'
-        require 'erb'
-        YAML.load(ERB.new(yaml.read).result) || {}
-      elsif ENV['DATABASE_URL']
-        # Value from ENV['DATABASE_URL'] is set to default database connection
-        # by Active Record.
-        {}
-      else
-        raise "Could not load database configuration. No such file - #{paths["config/database"].instance_variable_get(:@paths)}"
-      end
+                           require 'yaml'
+                           require 'erb'
+                           YAML.load(ERB.new(yaml.read).result) || {}
+                         elsif ENV['DATABASE_URL']
+                           # Value from ENV['DATABASE_URL'] is set to default database connection
+                           # by Active Record.
+                           {}
+                         else
+                           raise "Could not load database configuration.
+                           No such file - #{paths["config/database"].instance_variable_get(:@paths)}"
+                         end
       @configuration
     end
 

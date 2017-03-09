@@ -4,8 +4,8 @@ require 'pry'
 ENV['RAILS_ENV'] = 'test'
 ENV['BUNDLE_GEMFILE'] ||= File.expand_path('../../Gemfile', __FILE__)
 require 'multibase'
-require File.expand_path("../dummy/config/environment.rb",  __FILE__)
-require "rails/test_help"
+require File.expand_path('../dummy/config/environment.rb',  __FILE__)
+require 'rails/test_help'
 
 
 require 'bundler/setup'
@@ -18,7 +18,6 @@ require_relative 'dummy_app_helpers'
 module Multibase
   class TestCase < ActiveSupport::TestCase
     include DummyAppHelpers
-
 
     setup    :delete_dummy_files
     teardown :delete_dummy_files

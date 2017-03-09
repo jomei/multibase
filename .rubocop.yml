@@ -4,6 +4,9 @@ AllCops:
   StyleGuideCopsOnly: true
   TargetRubyVersion:  2.2
 
+Metrics/LineLength:
+  Max: 100
+
 Bundler/DuplicatedGem:
   Enabled: false
 

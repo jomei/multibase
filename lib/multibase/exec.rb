@@ -1,11 +1,11 @@
 module Multibase
   mattr_accessor :connected, instance_accessor: false
-  self.connected = false
 
   def self.exec(key)
-    # todo add key check
-    @config = Multibase::Config.new key, Multibase::Railtie.database_configuration[key]
-    @config.apply
+    if @config.nil? || @config.key != key
+      @config = Multibase::Config.new key, Multibase::Railtie.database_configuration[key]
+      @config.apply
+    end
     yield
   end
 end

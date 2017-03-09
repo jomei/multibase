@@ -69,16 +69,16 @@ module Multibase
       'rake'
     end
 
-    def run_on_database(connection, args, stream=:stdout)
+    def run_on_database(connection, args)
         Dir.chdir(dummy_root) { `#{run_cmd} db:#{connection}:#{args}` }
     end
 
-    def run_on_testable_database(args, stream=:stdout)
-      run_on_database(connection, args, stream)
+    def run_on_testable_database(args)
+      run_on_database(connection, args)
     end
 
-    def run_secondbase(args, stream=:stdout)
-      run_on_database second_connection, args, stream
+    def run_secondbase(args)
+      run_on_database second_connection, args
     end
 
     # Assertions

@@ -1,4 +1,3 @@
 class Foo < Multibase::Base
-  use_database :lite_2
-
+  using :lite_2
 end

@@ -11,9 +11,9 @@ class GeneratorTest < Multibase::TestCase
     output = Dir.chdir(dummy_root) { `rails g multibase:migration CreateFavorites #{connection} post_id:integer count:integer` }
     assert_match %r{create.*db/#{connection}/migrate/.*create_favorites\.rb}, output
     migration = generated_migration_data
-    assert_match %r{create_table :favorites}, migration
-    assert_match %r{t.integer :post_id}, migration
-    assert_match %r{t.integer :count}, migration
+    assert_match /create_table :favorites/, migration
+    assert_match /t.integer :post_id/, migration
+    assert_match /t.integer :count/, migration
   end
 
   private
