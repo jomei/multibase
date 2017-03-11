@@ -63,6 +63,7 @@ class MigrationRequiredTest < Multibase::TestCase
   end
 
   def test_db_migrate_on_second_connection
+    skip
     establish_connection(second_connection)
     run_secondbase :create
     run_secondbase :migrate
