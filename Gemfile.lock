@@ -172,6 +172,7 @@ DEPENDENCIES
   rake
   rspec
   rubocop (~> 0.42)
+  simplecov
   sqlite3
 
 BUNDLED WITH
