@@ -1,4 +1,4 @@
-# Multibase [![Build Status](https://travis-ci.org/jomei/multibase.svg?branch=master)](https://travis-ci.org/jomei/multibase)
+# Multibase [![Build Status](https://travis-ci.org/jomei/multibase.svg?branch=master)](https://travis-ci.org/jomei/multibase)   [![Coverage Status](https://coveralls.io/repos/github/jomei/multibase/badge.svg?branch=master)](https://coveralls.io/github/jomei/multibase?branch=master)
 Multiple database support for Rails
 ## Installation
 
