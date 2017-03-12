@@ -1,7 +1,6 @@
 namespace :db do
   keys = Multibase::Railtie.connection_keys
   keys.each do |key|
-
     namespace key.to_sym do
       namespace :create do
         task :all do
@@ -101,7 +100,6 @@ namespace :db do
         task :load do
           Multibase.exec(key) { Rake::Task['db:structure:load'].execute }
         end
-
       end
 
       namespace :test do
@@ -121,7 +119,6 @@ namespace :db do
           Multibase.exec(key) { Rake::Task['db:test:prepare'].execute }
         end
       end
-
     end
   end
 end

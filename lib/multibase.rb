@@ -20,8 +20,9 @@ module Multibase
         @settings    = HashWithIndifferentAccess.new(config.settings)
       end
 
-      @config = settings
-                    .each_with_object(HashWithIndifferentAccess.new) do |(key, val), hash|
+      @config = settings.each_with_object(
+          HashWithIndifferentAccess.new
+      ) do |(key, val), hash|
         hash[key] = Config.new(key, val)
       end
       self
