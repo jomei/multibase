@@ -178,18 +178,6 @@ class MigrationRequiredTest < Multibase::TestCase
 
   private
 
-  def setup_migration
-    Dir.chdir(dummy_root) { `rails g multibase:migration CreateFavorites #{connection} post_id:integer count:integer` }
-    Dir.chdir(dummy_root) { `rails g multibase:migration CreateComments #{second_connection} post_id:integer count:integer` }
-
-    migration1 = Dir.chdir(dummy_db.join 'migrate'){Dir['*.rb']}.first
-    migration2 = Dir.chdir(dummy_db(second_connection).join 'migrate'){Dir['*.rb']}.first
-
-    @timestamp1 = migration1.split('_').first
-    @timestamp2 = migration2.split('_').first
-  end
-
-
   def assert_no_tables
     if ActiveRecord::Base.connection.respond_to? :data_sources
       assert_equal [], ActiveRecord::Base.connection.data_sources

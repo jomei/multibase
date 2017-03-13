@@ -81,6 +81,17 @@ module Multibase
       run_on_database second_connection, args
     end
 
+    def setup_migration
+      Dir.chdir(dummy_root) { `rails g multibase:migration CreateFavorites #{connection} post_id:integer count:integer` }
+      Dir.chdir(dummy_root) { `rails g multibase:migration CreateComments #{second_connection} post_id:integer count:integer` }
+
+      migration1 = Dir.chdir(dummy_db.join 'migrate'){Dir['*.rb']}.first
+      migration2 = Dir.chdir(dummy_db(second_connection).join 'migrate'){Dir['*.rb']}.first
+
+      @timestamp1 = migration1.split('_').first
+      @timestamp2 = migration2.split('_').first
+    end
+
     # Assertions
 
     def assert_dummy_databases
