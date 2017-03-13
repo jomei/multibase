@@ -7,8 +7,7 @@ class ModelTest < Multibase::TestCase
     run_on_testable_database :create
     run_on_testable_database :migrate
 
-    run_secondbase :create
-    run_secondbase :migrate
+    establish_connection :default
   end
 
   def test_create_model
