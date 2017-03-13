@@ -44,6 +44,11 @@ custom_db: # the unique name for another database
     adapter: postgresql
     url:     <%= ENV['PERSONAL_BASE_URL'] %>
 ```
+### Configurations
+You can define your own default database key in `config/application.rb`
+```
+config.multibase.default_key # Default: 'default'
+```
 
 ### Rake tasks
 All `db:` rake tasks defined for each database as `db:your_database_name:command`, e.g. `rake db:cusom_db:create`
@@ -58,6 +63,16 @@ Example
 ```ruby
 rails g multibase:migration CreateMyTable custom_db foo:integer baz:string 
 ```
+### Rails models
+All models should be inherit from `Multibase::Base`.
+Use `using` method to specify database connection 
+Example
+```ruby
+class Comment < Multibase::Base
+  using :my_not_default_connection
+end
+```
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
