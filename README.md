@@ -1,5 +1,6 @@
 # Multibase [![Build Status](https://travis-ci.org/jomei/multibase.svg?branch=master)](https://travis-ci.org/jomei/multibase)   [![Coverage Status](https://coveralls.io/repos/github/jomei/multibase/badge.svg?branch=master)](https://coveralls.io/github/jomei/multibase?branch=master) [![Code Climate](https://lima.codeclimate.com/github/jomei/multibase/badges/gpa.svg)](https://lima.codeclimate.com/github/jomei/multibase)
-Multiple database support for Rails
+Multiple database support for Rails. 
+This solution inspired by https://github.com/customink/secondbase
 ## Installation
 
 Add this line to your application's Gemfile:
