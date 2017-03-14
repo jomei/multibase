@@ -11,7 +11,6 @@ module Multibase
     delegate :each, :[], :keys, to: :@config
 
     attr_reader :settings
-
     attr_reader :default_key
 
     def reset
@@ -33,7 +32,7 @@ module Multibase
     end
 
     def apply(key)
-      tap { |db| db[key].apply }
+      @config[key].apply
     end
 
   end
