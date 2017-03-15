@@ -62,21 +62,18 @@ module Multibase
     end
 
     def self.database_configuration
+      @configuration ||= Rails.application.config.multibase.settings || load_configuration
+      @configuration
+    end
+
+    def self.load_configuration
       path = Rails.root.join config.multibase.path
       yaml = Pathname.new(path) if path
-      @configuration ||= if yaml && yaml.exist?
-                           require 'yaml'
-                           require 'erb'
-                           YAML.load(ERB.new(yaml.read).result) || {}
-                         elsif ENV['DATABASE_URL']
-                           # Value from ENV['DATABASE_URL'] is set to default database connection
-                           # by Active Record.
-                           {}
-                         else
-                           raise "Could not load database configuration.
-                           No such file - #{paths["config/database"].instance_variable_get(:@paths)}"
-                         end
-      @configuration
+      if yaml && yaml.exist?
+        require 'yaml'
+        require 'erb'
+        YAML.load(ERB.new(yaml.read).result) || {}
+      end
     end
 
   end
