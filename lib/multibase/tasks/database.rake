@@ -138,5 +138,8 @@ end
 
   task.enhance do
     Rake::Task['db:load_config'].invoke
+    Multibase::Railtie.connection_keys.each do |connection|
+      Rake::Task["db:#{connection}:#{name}"].invoke
+    end
   end
 end
