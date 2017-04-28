@@ -89,6 +89,10 @@ namespace :db do
           Multibase.exec(key) { Rake::Task['db:schema:load'].execute }
         end
 
+        task :dump do
+          Multibase.exec(key) { Rake::Task['db:schema:dump'].execute }
+        end
+
         namespace :cache do
           task :dump do
             Multibase.exec(key) { Rake::Task['db:schema:cache:dump'].execute }
@@ -126,7 +130,7 @@ end
 %w(
   create:all create drop:all drop purge:all purge
   migrate migrate:status abort_if_pending_migrations
-  schema:load schema:cache:dump structure:load setup seed
+  schema:dump schema:load schema:cache:dump structure:load setup seed
   test:purge test:load_schema test:load_structure test:prepare
 ).each do |name|
   task = Rake::Task["db:#{name}"]
@@ -134,5 +138,8 @@ end
 
   task.enhance do
     Rake::Task['db:load_config'].invoke
+    Multibase::Railtie.connection_keys.each do |connection|
+      Rake::Task["db:#{connection}:#{name}"].invoke
+    end
   end
 end
